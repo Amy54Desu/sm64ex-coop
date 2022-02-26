@@ -5,6 +5,8 @@
 #include "pc/utils/misc.h"
 #include "pc/configfile.h"
 #include "pc/cheats.h"
+#include "pc/network/discord/lobby.h"
+#include "djui_inputbox.h"
 #ifdef DISCORD_SDK
 #define DJUI_HOST_NS_IS_SOCKET (configNetworkSystem == 1)
 #else
@@ -22,43 +24,31 @@ static void djui_panel_host_settings_knockback_change(UNUSED struct DjuiBase* ca
     }
 }
 
-static bool djui_panel_host_port_valid(void) {
+static bool djui_panel_host_limit_valid(void) {
     char* buffer = sPlayerAmount->buffer;
-    int port = 0;
+    int limit = 0;
     while (*buffer != '\0') {
         if (*buffer < '0' || *buffer > '9') { return false; }
-        port *= 10;
-        port += (*buffer - '0');
+        limit *= 10;
+        limit += (*buffer - '0');
         buffer++;
     }
-    return port >= 2 && port <= 16;
+    return limit >= 2 && limit <= 16;
 }
 
-static void djui_panel_host_port_text_change(struct DjuiBase* caller) {
+static void djui_panel_host_player_text_change(struct DjuiBase* caller) {
     struct DjuiInputbox* inputbox1 = (struct DjuiInputbox*)caller;
-    if (djui_panel_host_port_valid()) {
+    if (djui_panel_host_limit_valid()) {
         djui_inputbox_set_text_color(inputbox1, 0, 0, 0, 255);
     } else {
         djui_inputbox_set_text_color(inputbox1, 255, 0, 0, 255);
-    }
-	configAmountofPlayers = atoi(sPlayerAmount->buffer);
-    // This code makes it so if you can't go over 16 or below 2 players
-    if (configAmountofPlayers < 2 || configAmountofPlayers > 16) {
-    	configAmountofPlayers = 16;
-    }
-}
-
-// This code may be unnessasary...
-static void djui_panel_going_do_going(struct DjuiBase* caller) {
-    if (!djui_panel_host_port_valid()) {
-        djui_interactable_set_input_focus(&sPlayerAmount->base);
-        djui_inputbox_select_all(sPlayerAmount);
         return;
     }
+	configAmountofPlayers = atoi(sPlayerAmount->buffer);
 }
 
 void djui_panel_host_settings_create(struct DjuiBase* caller) {
-    f32 bodyHeight = 32 * 11 + 64 * 1 + 16 * 11;
+    f32 bodyHeight = 32 * 8 + 64 * 1 + 16 * 8;
 
     struct DjuiBase* defaultBase = NULL;
     struct DjuiThreePanel* panel = djui_panel_menu_create(bodyHeight, "\\#ff0800\\S\\#1be700\\E\\#00b3ff\\T\\#ffef00\\T\\#ff0800\\I\\#1be700\\N\\#00b3ff\\G\\#ffef00\\S");
@@ -116,8 +106,8 @@ void djui_panel_host_settings_create(struct DjuiBase* caller) {
             char portString[32] = { 0 };
             snprintf(portString, 32, "%d", configAmountofPlayers);
             djui_inputbox_set_text(inputbox1, portString);
-            djui_interactable_hook_value_change(&inputbox1->base, djui_panel_host_port_text_change);
-          sPlayerAmount = inputbox1;
+            djui_interactable_hook_value_change(&inputbox1->base, djui_panel_host_player_text_change);
+          	sPlayerAmount = inputbox1;
         }
         
         struct DjuiButton* button1 = djui_button_create(&body->base, "Back");
@@ -126,6 +116,5 @@ void djui_panel_host_settings_create(struct DjuiBase* caller) {
         djui_button_set_style(button1, 1);
         djui_interactable_hook_click(&button1->base, djui_panel_menu_back);
     }
-
     djui_panel_add(caller, &panel->base, defaultBase);
 }
