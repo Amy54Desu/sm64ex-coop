@@ -7,11 +7,6 @@
 #include "pc/cheats.h"
 #include "pc/network/discord/lobby.h"
 #include "djui_inputbox.h"
-#ifdef DISCORD_SDK
-#define DJUI_HOST_NS_IS_SOCKET (configNetworkSystem == 1)
-#else
-#define DJUI_HOST_NS_IS_SOCKET (true)
-#endif
 
 static unsigned int sKnockbackIndex = 0;
 struct DjuiInputbox* sPlayerAmount = NULL;
