@@ -48,7 +48,7 @@ static void djui_panel_host_port_text_change(struct DjuiBase* caller) {
     }
 }
 
-// This code may be unnessasary
+// This code may be unnessasary...
 static void djui_panel_going_do_going(struct DjuiBase* caller) {
     if (!djui_panel_host_port_valid()) {
         djui_interactable_set_input_focus(&sPlayerAmount->base);
