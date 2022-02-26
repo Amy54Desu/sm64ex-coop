@@ -102,7 +102,7 @@ void djui_panel_host_settings_create(struct DjuiBase* caller) {
             snprintf(limitString, 32, "%d", configAmountofPlayers);
             djui_inputbox_set_text(inputbox1, limitString);
             djui_interactable_hook_value_change(&inputbox1->base, djui_panel_host_player_text_change);
-          	sPlayerAmount = inputbox1;
+            sPlayerAmount = inputbox1;
         }
         
         struct DjuiButton* button1 = djui_button_create(&body->base, "Back");
