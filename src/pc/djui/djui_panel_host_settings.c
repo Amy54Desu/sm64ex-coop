@@ -98,9 +98,9 @@ void djui_panel_host_settings_create(struct DjuiBase* caller) {
             djui_base_set_size_type(&inputbox1->base, DJUI_SVT_RELATIVE, DJUI_SVT_ABSOLUTE);
             djui_base_set_size(&inputbox1->base, 0.5f, 32);
             djui_base_set_alignment(&inputbox1->base, DJUI_HALIGN_RIGHT, DJUI_VALIGN_TOP);
-            char portString[32] = { 0 };
-            snprintf(portString, 32, "%d", configAmountofPlayers);
-            djui_inputbox_set_text(inputbox1, portString);
+            char limitString[32] = { 0 };
+            snprintf(limitString, 32, "%d", configAmountofPlayers);
+            djui_inputbox_set_text(inputbox1, limitString);
             djui_interactable_hook_value_change(&inputbox1->base, djui_panel_host_player_text_change);
           	sPlayerAmount = inputbox1;
         }
